@@ -1,0 +1,25 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm install:*)",
+      "Bash(claude mcp add:*)",
+      "Bash(ls:*)",
+      "Bash(node --version:*)",
+      "Bash(xargs:*)",
+      "Bash(wc:*)",
+      "Bash(npm create:*)",
+      "Bash(npx tsc:*)",
+      "Bash(npm run build:*)",
+      "Bash(npx vite --host)",
+      "Bash(npx vite:*)",
+      "Bash(curl:*)",
+      "Bash(test:*)",
+      "Bash(node -e:*)",
+      "Bash(npx vercel login)"
+    ]
+  },
+  "enableAllProjectMcpServers": true,
+  "enabledMcpjsonServers": [
+    "supabase"
+  ]
+}
