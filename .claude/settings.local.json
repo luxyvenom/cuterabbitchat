@@ -15,7 +15,8 @@
       "Bash(curl:*)",
       "Bash(test:*)",
       "Bash(node -e:*)",
-      "Bash(npx vercel login)"
+      "Bash(npx vercel login)",
+      "Bash(npx vercel:*)"
     ]
   },
   "enableAllProjectMcpServers": true,

@@ -27,15 +27,22 @@ const CreatePage = () => {
   });
 
   useEffect(() => {
-    supabase.from('tags').select('*').then(({ data }) => {
-      if (data && data.length > 0) {
-        setTags(data.map((t) => ({ id: t.id, name: t.name, group: t.group })));
-      } else {
+    const fetchTags = async () => {
+      try {
+        const { data, error } = await supabase.from('tags').select('*');
+        if (error) throw error;
+        
+        if (data && data.length > 0) {
+          setTags(data.map((t) => ({ id: t.id, name: t.name, group: t.group })));
+        } else {
+          setTags(MOCK_TAGS);
+        }
+      } catch {
         setTags(MOCK_TAGS);
       }
-    }).catch(() => {
-      setTags(MOCK_TAGS);
-    });
+    };
+    
+    fetchTags();
   }, []);
 
   const handleChange = (field: string, value: string) => {
