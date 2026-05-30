@@ -1,73 +1,146 @@
-# React + TypeScript + Vite
+# 🐰 CuteRabbitChat
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+> AI-powered character chat platform — talk with a cute rabbit, powered by large language models.
 
-Currently, two official plugins are available:
+**Live → [cuterabbitchat.vercel.app](https://cuterabbitchat.vercel.app)**
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+---
 
-## React Compiler
+## Overview
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+CuteRabbitChat is a lightweight AI character chat demo built as part of the [LUXY VENOM](https://luxyvenom.com) platform stack. It lets users have real-time conversations with a personality-driven AI character — a starting point for exploring character consistency, tone control, and conversational UX on top of LLM APIs.
 
-## Expanding the ESLint configuration
+This project serves as a public prototype for the core interaction loop that LUXY VENOM's full platform is built on.
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+---
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+## Features
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+- 💬 **Real-time character chat** — streaming responses with character-consistent tone
+- 🐰 **Persistent character persona** — system prompt architecture keeps the character in-role
+- ⚡ **Edge-deployed** — hosted on Vercel for low-latency global access
+- 📱 **Responsive UI** — works on desktop and mobile browsers
+- 🔒 **Stateless sessions** — no login required, no data stored
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+---
+
+## Tech Stack
+
+| Layer | Technology |
+|---|---|
+| Framework | Next.js (App Router) |
+| State Management | Zustand |
+| LLM Backend | BytePlus ModelArk |
+| Deployment | Vercel |
+| Styling | Tailwind CSS |
+
+---
+
+## Getting Started
+
+### Prerequisites
+
+- Node.js 18+
+- A BytePlus ModelArk API key (or compatible OpenAI-format endpoint)
+
+### Local Development
+
+```bash
+# Clone the repository
+git clone https://github.com/luxyvenom/cuterabbitchat.git
+cd cuterabbitchat
+
+# Install dependencies
+npm install
+
+# Set up environment variables
+cp .env.example .env.local
+# → Add your BYTEPLUS_API_KEY and BYTEPLUS_MODEL to .env.local
+
+# Run dev server
+npm run dev
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+### Environment Variables
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```env
+BYTEPLUS_API_KEY=your_api_key_here
+BYTEPLUS_MODEL=your_model_endpoint_id
+BYTEPLUS_BASE_URL=https://ark.ap-southeast.bytepluses.com/api/v3
 ```
+
+---
+
+## Project Structure
+
+```
+cuterabbitchat/
+├── app/
+│   ├── page.tsx          # Main chat UI
+│   ├── api/
+│   │   └── chat/
+│   │       └── route.ts  # Streaming LLM API route
+│   └── layout.tsx
+├── components/
+│   ├── ChatWindow.tsx    # Message list + scroll
+│   ├── MessageBubble.tsx # Individual message rendering
+│   └── InputBar.tsx      # User input + send
+├── store/
+│   └── chatStore.ts      # Zustand state (messages, loading)
+├── lib/
+│   └── byteplus.ts       # ModelArk client wrapper
+└── public/
+    └── rabbit.png        # Character avatar
+```
+
+---
+
+## Character System Prompt Design
+
+The character's personality is defined in `lib/byteplus.ts` as a system prompt injected at the start of every conversation. Key design principles used:
+
+- **Role anchoring** — opens with a clear identity statement
+- **Tone constraints** — defines speaking style (cute, warm, slightly playful)
+- **Boundary rules** — keeps the character from breaking persona on edge inputs
+- **Language flexibility** — responds in the same language as the user (Korean / English / Japanese)
+
+To customize the character, edit the `SYSTEM_PROMPT` constant in `lib/byteplus.ts`.
+
+---
+
+## Roadmap
+
+- [ ] Character memory across sessions (Upstash Redis)
+- [ ] Multiple character support (character selection screen)
+- [ ] Voice input/output (Web Speech API)
+- [ ] Creator dashboard to define custom characters (LUXY VENOM Studio)
+- [ ] Age-gated content tier (Lv.0 / Lv.1 / Lv.2 system)
+- [ ] Japanese / Korean UI localization
+
+---
+
+## Related Projects
+
+This repo is part of the LUXY VENOM multi-repo architecture:
+
+| Repo | Description |
+|---|---|
+| `luxy-venom-web` | Main platform (Next.js) |
+| `luxy-venom-api` | Backend API (Go + sqlc + pgx) |
+| `luxy-venom-studio` | Creator dashboard |
+| `luxy-venom-common` | Shared harness / CI templates |
+| `luxy-venom-policy` | Privacy & terms (MDX) |
+
+---
+
+## License
+
+MIT © [LUXY VENOM Inc.](https://luxyvenom.com)
+
+---
+
+<p align="center">
+  Built with ☕ by <a href="https://luxyvenom.com">LUXY VENOM Inc.</a> · Seoul, Korea
+</p>
